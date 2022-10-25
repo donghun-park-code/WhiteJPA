@@ -14,9 +14,9 @@ public class BoardRepository {
 
     private final EntityManager em;
 
-    // id가 없으면 insrt 있으면 merge(덮어씌운다)
-    public void save(Board board) {
-        em.persist(board); // insert 됨
+    public Board save(Board board) {
+        em.persist(board);
+        return board;
     }
 
     public Board findById(Long id) {
@@ -27,16 +27,16 @@ public class BoardRepository {
         return boardPS;
     }
 
-    public void delectById(Long id) {
-        em.createQuery("delect form board b where b.id = : id")
-
-                .setParameter("id", id)
-                .executeUpdate();
-    }
-
     public List<Board> findAll() {
-        List<Board> boardList = em.createQuery("select b from board b", Board.class)
+        // JPQL 문법
+        List<Board> boardList = em.createQuery("select b from Board b", Board.class)
                 .getResultList();
         return boardList;
+    }
+
+    public void deleteById(Long id) {
+        em.createQuery("delete from Board b where b.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }
