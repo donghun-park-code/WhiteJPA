@@ -1,5 +1,8 @@
 package site.metacoding.white.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,12 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Setter
+@NoArgsConstructor
 @Getter
 @Entity
 public class Board {
@@ -27,6 +31,10 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    // 조회를 위해서만 필요함
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
     public Board(Long id, String title, String content, User user) {
         this.id = id;
@@ -40,4 +48,5 @@ public class Board {
         this.title = title;
         this.content = content;
     }
+
 }
